@@ -1,5 +1,5 @@
-nerv
+libnerv
 
-nerv is a tiny C tensor framework
+nerv tiny C tensor framework
 
 @eulogic
