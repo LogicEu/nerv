@@ -1,6 +1,6 @@
 #!/bin/bash
 
-name=libnerv
+name=nerv
 
 flags=(
     -std=c99
@@ -24,12 +24,12 @@ fail_os() {
 }
 
 mac_dlib() {
-    gcc ${flags[*]} ${inc[*]} ${lib[*]} -dynamiclib src/*.c -o $name.dylib
-    install_name_tool -id @executable_path/../$name.dylib $name.dylib
+    gcc ${flags[*]} ${inc[*]} ${lib[*]} -dynamiclib src/*.c -o lib$name.dylib
+    install_name_tool -id @executable_path/../$name.dylib lib$name.dylib
 }
 
 linux_dlib() {
-    gcc -shared ${flags[*]} ${inc[*]} ${lib[*]} -lm -fPIC src/*.c -o $name.so 
+    gcc -shared ${flags[*]} ${inc[*]} ${lib[*]} -lm -fPIC src/*.c -o lib$name.so 
 }
 
 dlib() {
@@ -44,16 +44,22 @@ dlib() {
 
 slib() {
     gcc ${flags[*]} ${inc[*]} -c src/*.c
-    ar -crv $name.a *.o
+    ar -crv lib$name.a *.o
     rm *.o
+}
+
+clean() {
+    rm lib$name.a
 }
 
 if [[ $# < 1 ]]; then 
     fail_op
-elif [[ "$1" == "-d" ]]; then
+elif [[ "$1" == "-dlib" ]]; then
     dlib
-elif [[ "$1" == "-s" ]]; then
+elif [[ "$1" == "-slib" ]]; then
     slib
+elif [[ "$1" == "-clean" ]]; then
+    clean
 else
     fail_op
 fi 

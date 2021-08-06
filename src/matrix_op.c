@@ -3,7 +3,7 @@
  *       matrix functions and operations
  * ******************************************/
 
-#define MATRIX_AT(m, x, y) (m->data + (m->columns * y) + x)
+#define MATRIX_AT(m, x, y) (m->data + (m->columns * (y)) + (x))
 
 #include <nerv.h>
 #include <stdio.h>
