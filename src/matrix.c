@@ -57,14 +57,14 @@ Mat matrix_uniform(int rows, int columns, float val)
     return m;
 }
 
-Mat matrix_copy(Mat* mat)
+Mat matrix_copy(const Mat* restrict mat)
 {
     Mat ret = matrix(mat->rows, mat->columns);
     memcpy(ret.data, mat->data, sizeof(float) * mat->rows * mat->columns);
     return ret;
 }
 
-Mat matrix_vector(Vec* v)
+Mat matrix_vector(const Vec* restrict v)
 {
     Mat m = matrix(v->size, 1);
     memcpy(m.data, v->data, sizeof(float) * v->size);

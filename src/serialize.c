@@ -44,7 +44,7 @@ Model model_load(char* path)
     return model;
 }
 
-void model_save(char* path, Model* model)
+void model_save(char* path, const Model* restrict model)
 {
     FILE* file = fopen(path, "wb");
     if (!file) {

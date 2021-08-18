@@ -44,7 +44,7 @@ Vec vector_uniform(int size, float val)
     return v;
 }
 
-Vec vector_copy(Vec* src)
+Vec vector_copy(const Vec* restrict src)
 {
     Vec v = vector(src->size);
     memcpy(v.data, src->data, v.size * sizeof(float));

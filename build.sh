@@ -14,7 +14,7 @@ inc=(
 )
 
 fail_op() {
-    echo "Run with -d to build dynamically or -s to build statically."
+    echo "Run with -dlib to build dynamically or -slib to build statically."
     exit
 }
 
@@ -25,7 +25,7 @@ fail_os() {
 
 mac_dlib() {
     gcc ${flags[*]} ${inc[*]} ${lib[*]} -dynamiclib src/*.c -o lib$name.dylib
-    install_name_tool -id @executable_path/../$name.dylib lib$name.dylib
+    install_name_tool -id @executable_path/../lib$name.dylib lib$name.dylib
 }
 
 linux_dlib() {

@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void vector_add(Vec* dst, Vec* src)
+void vector_add(const Vec* restrict dst, const Vec* restrict src)
 {
     if (dst->size != src->size) {
         printf("Add: Vector A (%d) and B (%d) are not the same size\n", dst->size, src->size);
@@ -20,7 +20,7 @@ void vector_add(Vec* dst, Vec* src)
     }
 }
 
-void vector_sub(Vec* dst, Vec* src)
+void vector_sub(const Vec* restrict dst, const Vec* restrict src)
 {
     if (dst->size != src->size) {
         printf("Sub: Vector A (%d) and B (%d) are not the same size\n", dst->size, src->size);
@@ -33,7 +33,7 @@ void vector_sub(Vec* dst, Vec* src)
     }
 }
 
-void vector_hadamard(Vec* dst, Vec* src)
+void vector_hadamard(const Vec* restrict dst, const Vec* restrict src)
 {
     if (dst->size != src->size) {
         printf("Hadamard: Vector A (%d) and B (%d) are not the same size\n", dst->size, src->size);
@@ -46,7 +46,7 @@ void vector_hadamard(Vec* dst, Vec* src)
     }
 }
 
-void vector_scale(Vec* v, float n)
+void vector_scale(const Vec* restrict v, float n)
 {
     float *f = v->data;
     for (float* end = f + v->size; f != end; f++) {
@@ -54,7 +54,7 @@ void vector_scale(Vec* v, float n)
     }
 }
 
-Vec vector_by_matrix(Mat* mat, Vec* vec)
+Vec vector_by_matrix(const Mat* restrict mat, const Vec* restrict vec)
 {
     Vec ret = vector(mat->rows);
     if (vec->size != mat->columns) {
@@ -76,7 +76,7 @@ Vec vector_by_matrix(Mat* mat, Vec* vec)
     return ret;
 }
 
-Vec vector_by_matrix_transposed(Mat* mat, Vec* vec)
+Vec vector_by_matrix_transposed(const Mat* restrict mat, const Vec* restrict vec)
 {
     Mat m;
     memcpy(&m, mat, sizeof(Mat));
@@ -87,7 +87,7 @@ Vec vector_by_matrix_transposed(Mat* mat, Vec* vec)
     return vector_by_matrix(&m, vec);
 }
 
-Vec vector_relu(Vec* v)
+Vec vector_relu(const Vec* restrict v)
 {
     Vec ret = vector(v->size);
     
@@ -99,7 +99,7 @@ Vec vector_relu(Vec* v)
     return ret;
 }
 
-Vec vector_drelu(Vec* v)
+Vec vector_drelu(const Vec* restrict v)
 {
     Vec ret = vector(v->size);
     float* r = ret.data, *n = v->data;
@@ -109,7 +109,7 @@ Vec vector_drelu(Vec* v)
     return ret;
 }
 
-Vec vector_sigmoid(Vec* v)
+Vec vector_sigmoid(const Vec* restrict v)
 {
     Vec ret = vector(v->size);
     float* r = ret.data, *n = v->data;
@@ -119,7 +119,7 @@ Vec vector_sigmoid(Vec* v)
     return ret;
 }
 
-Vec vector_dsigmoid(Vec* v)
+Vec vector_dsigmoid(const Vec* restrict v)
 {
     Vec ret = vector(v->size);
     float* r = ret.data, *n = v->data;
@@ -129,7 +129,7 @@ Vec vector_dsigmoid(Vec* v)
     return ret;
 }
 
-Vec vector_sigderiv(Vec* v)
+Vec vector_sigderiv(const Vec* restrict v)
 {
     Vec ret = vector(v->size);
     float* r = ret.data, *n = v->data;
@@ -139,7 +139,7 @@ Vec vector_sigderiv(Vec* v)
     return ret;
 }
 
-Vec vector_leaky_relu(Vec* v, float leak)
+Vec vector_leaky_relu(const Vec* restrict v, float leak)
 {
     Vec ret = vector(v->size);
     float* r = ret.data, *n = v->data;
@@ -149,7 +149,7 @@ Vec vector_leaky_relu(Vec* v, float leak)
     return ret;
 }
 
-Vec vector_dleaky_relu(Vec* v, float leak)
+Vec vector_dleaky_relu(const Vec* restrict v, float leak)
 {
     Vec ret = vector(v->size);
     float* r = ret.data, *n = v->data;
@@ -159,7 +159,7 @@ Vec vector_dleaky_relu(Vec* v, float leak)
     return ret;
 }
 
-Vec vector_softmax(Vec* v)
+Vec vector_softmax(const Vec* restrict v)
 {
     float* n = v->data, total = 0.0f, *f;
     for (float* end = n + v->size; n != end; n++) {

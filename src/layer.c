@@ -23,7 +23,7 @@ Layer layer_create(int layer_size, int next_layer_size)
     return layer;
 }
 
-Layer layer_copy(Layer* layer)
+Layer layer_copy(const Layer* restrict layer)
 {
     Layer ret;
     ret.w.columns = 0;

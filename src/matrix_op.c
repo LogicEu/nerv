@@ -8,7 +8,7 @@
 #include <nerv.h>
 #include <stdio.h>
 
-Mat matrix_scale(Mat* mat, float scale)
+Mat matrix_scale(const Mat* restrict mat, float scale)
 {
     Mat ret = matrix_copy(mat);
     int size = ret.rows * ret.columns;
@@ -21,7 +21,7 @@ Mat matrix_scale(Mat* mat, float scale)
     return ret;
 }
 
-Mat matrix_hadamard(Mat* a, Mat* b)
+Mat matrix_hadamard(const Mat* restrict a, const Mat* restrict b)
 {
     Mat ret = matrix(a->rows, a->columns);
     if ((a->rows != b->rows) || (a->columns != b->columns)) {
@@ -38,7 +38,7 @@ Mat matrix_hadamard(Mat* a, Mat* b)
     return ret;
 }
 
-Mat matrix_transpose(Mat* m)
+Mat matrix_transpose(const Mat* restrict m)
 {
     Mat ret = matrix(m->columns, m->rows); Mat* r = &ret;
     
@@ -52,7 +52,7 @@ Mat matrix_transpose(Mat* m)
     return ret;
 }
 
-Mat matrix_multiply(Mat* a, Mat* b)
+Mat matrix_multiply(const Mat* restrict a, const Mat* restrict b)
 {
     Mat ret = matrix(a->rows, b->columns);
     if (a->columns != b->rows) {

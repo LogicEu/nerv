@@ -23,7 +23,7 @@ Vec vector_scan()
     return v;
 }
 
-void vector_print(Vec* vec)
+void vector_print(const Vec* restrict vec)
 {
     printf("Vector\nSize: %d\n", vec->size);
     float* f = vec->data;
@@ -54,7 +54,7 @@ Mat matrix_scan()
     return mat;
 }
 
-void matrix_print(Mat* mat)
+void matrix_print(const Mat* restrict mat)
 {
     printf("Matrix\nRows: %u\tColumns: %u\n", mat->rows, mat->columns);
 
@@ -95,7 +95,7 @@ Model model_scan()
     return model;
 }
 
-void model_print(Model* model)
+void model_print(const Model* restrict model)
 {
     printf("Model:\n");
     Layer* layer = model->layers;
@@ -104,19 +104,19 @@ void model_print(Model* model)
     }
 }
 
-void model_print_input(Model* model)
+void model_print_input(const Model* restrict model)
 {
     printf("Model Input:\n");
     vector_print(&model->layers->a);
 }
 
-void model_print_output(Model* model)
+void model_print_output(const Model* restrict model)
 {
     printf("Model Output:\n");
     vector_print(&model->layers[model->layer_count - 1].a);
 }
 
-void model_print_struct(Model* model)
+void model_print_struct(const Model* restrict model)
 {
     printf("Model Structure\nLayers: %d\n", model->layer_count);
     int i = 0;

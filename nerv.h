@@ -30,6 +30,21 @@ typedef struct {
     Layer* layers;
 } Model;
 
+#define _ftou(n) (unsigned int)(int)((n) * 255)
+#define _utof(u) ((float)(u) / 255.0f)
+#define __clampf(x, min, max) (x * (min <= x && x <= max) + max * (x > max) + min * (x < min))
+#define _clampf(x, min, max) __clampf((x), (min), (max)) 
+#define _normf(x) _clampf(x, 0.0, 1.0)
+#define _sigmoid(x) (1.0 / (1.0 + exp(-(x))))
+#define _sigderiv(x) ((x) * (1.0 - (x)))
+#define _dsigmoid(x) _sigderiv(_sigmoid(x))
+#define _relu(x) ((x) * ((x) > 0.0f))
+#define _drelu(x) (float)((x) > 0.0f)
+#define __leaky_relu(x, slope) (x * (x >= 0.0f) + slope * (x < 0.0f))
+#define _leaky_relu(x, slope) __leaky_relu((x), (slope))
+#define __dleaky_relu(x, slope) (float)(x >= 0.0f) + slope * (x < 0.0f)
+#define _dleaky_relu(x, slope) __dleaky_relu((x), (slope))
+
 /*------------------------------------------*/
 
 /*    PSEUDO RANDOM GENERATOR AND MATH      */
@@ -71,28 +86,28 @@ float dleaky_relu(float x, float slope);
 Vec vector(int size);
 Vec vector_create(int size, ...);
 Vec vector_uniform(int size, float val);
-Vec vector_copy(Vec* src);
+Vec vector_copy(const Vec* src);
 void vector_free(Vec* vector);
 
 /*********************************************
  *     vector functions and operations
  * ******************************************/
 
-void vector_scale(Vec* v, float n);
-void vector_add(Vec* dst, Vec* src);
-void vector_sub(Vec* dst, Vec* src);
-void vector_hadamard(Vec* dst, Vec* src);
+void vector_scale(const Vec* v, float n);
+void vector_add(const Vec* dst, const Vec* src);
+void vector_sub(const Vec* dst, const Vec* src);
+void vector_hadamard(const Vec* dst, const Vec* src);
 
-Vec vector_by_matrix(Mat* mat, Vec* vec);
-Vec vector_by_matrix_transposed(Mat* mat, Vec* vec);
-Vec vector_sigmoid(Vec* v);
-Vec vector_dsigmoid(Vec* v);
-Vec vector_sigderiv(Vec* v);
-Vec vector_relu(Vec* v);
-Vec vector_drelu(Vec* v);
-Vec vector_leaky_relu(Vec* v, float leak);
-Vec vector_dleaky_relu(Vec* v, float leak);
-Vec vector_softmax(Vec* v);
+Vec vector_by_matrix(const Mat* mat, const Vec* vec);
+Vec vector_by_matrix_transposed(const Mat* mat, const Vec* vec);
+Vec vector_sigmoid(const Vec* v);
+Vec vector_dsigmoid(const Vec* v);
+Vec vector_sigderiv(const Vec* v);
+Vec vector_relu(const Vec* v);
+Vec vector_drelu(const Vec* v);
+Vec vector_leaky_relu(const Vec* v, float leak);
+Vec vector_dleaky_relu(const Vec* v, float leak);
+Vec vector_softmax(const Vec* v);
 
 /*------------------------------------------*/
 
@@ -106,18 +121,18 @@ Mat matrix(int rows, int columns);
 Mat matrix_create(int rows, int columns, ...);
 Mat matrix_identity(int size);
 Mat matrix_uniform(int rows, int columns, float val);
-Mat matrix_copy(Mat* mat);
-Mat matrix_vector(Vec* v);
+Mat matrix_copy(const Mat* mat);
+Mat matrix_vector(const Vec* v);
 void matrix_free(Mat* mat);
 
 /*********************************************
  *       matrix functions and operations
  * ******************************************/
 
-Mat matrix_scale(Mat* mat, float scale);
-Mat matrix_multiply(Mat* a, Mat* b);
-Mat matrix_hadamard(Mat* a, Mat* b);
-Mat matrix_transpose(Mat* m);
+Mat matrix_scale(const Mat* mat, float scale);
+Mat matrix_multiply(const Mat* a, const Mat* b);
+Mat matrix_hadamard(const Mat* a, const Mat* b);
+Mat matrix_transpose(const Mat* m);
 
 /*------------------------------------------*/
 
@@ -135,7 +150,7 @@ Mat matrix_transpose(Mat* m);
  * ******************************************/
 
 Layer layer_create(int layer_size, int next_layer_size);
-Layer layer_copy(Layer* layer);
+Layer layer_copy(const Layer* layer);
 void layer_vector_free(Layer* layer);
 void layer_matrix_free(Layer* layer);
 void layer_free(Layer* layer);
@@ -146,18 +161,18 @@ void layer_free(Layer* layer);
 
 Model model_new(int layer_count);
 Model model_create(int layer_count, ...);
-Model model_copy(Model* model);
+Model model_copy(const Model* model);
 void model_free(Model* model);
 
 /*********************************************
  *    neural network model operations 
  * ******************************************/
 
-void model_init(Model* model);
-void model_forward(Model* model);
-void model_backwards(Model* model, Vec* desired_output);
-void model_update(Model* model, float alpha);
-float model_cost(Model* model, Vec* desired_output);
+void model_init(const Model* model);
+void model_forward(const Model* model);
+void model_backwards(const Model* model, const Vec* desired_output);
+void model_update(const Model* model, float alpha);
+float model_cost(const Model* model, const Vec* desired_output);
 
 /*------------------------------------------*/
 
@@ -168,23 +183,23 @@ float model_cost(Model* model, Vec* desired_output);
  * ******************************************/
 
 Model model_load(char* path);
-void model_save(char* path, Model* model);
+void model_save(char* path, const Model* model);
 
 /*********************************************
  *   useful IO functions to print and scan
  * ******************************************/
 
 Vec vector_scan();
-void vector_print(Vec* vec);
+void vector_print(const Vec* vec);
 
 Mat matrix_scan();
-void matrix_print(Mat* mat);
+void matrix_print(const Mat* mat);
 
 Model model_scan();
-void model_print(Model* nm);
-void model_print_input(Model* nm);
-void model_print_output(Model* nm);
-void model_print_struct(Model* nm);
+void model_print(const Model* nm);
+void model_print_input(const Model* nm);
+void model_print_output(const Model* nm);
+void model_print_struct(const Model* nm);
 
 /*------------------------------------------*/
 

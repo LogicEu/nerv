@@ -41,7 +41,7 @@ static void matrix_minus_vec_by_vec(Mat* m, Vec* a, Vec* b)
 
 /*------------------------------------------*/
 
-void model_init(Model* model)
+void model_init(const Model* restrict model)
 {
     Layer* layer = model->layers;
     for (int i = 0; i < model->layer_count - 1; i++) {
@@ -55,7 +55,7 @@ void model_init(Model* model)
     }
 }
 
-void model_forward(Model* model)
+void model_forward(const Model* restrict model)
 {
     Layer* layer = model->layers, *next_layer; next_layer = layer + 1;
     for (int i = 0; i < model->layer_count - 1; i++) {
@@ -70,7 +70,7 @@ void model_forward(Model* model)
     }
 }
 
-void model_backwards(Model* model, Vec* desired_output)
+void model_backwards(const Model* restrict model, const Vec* restrict desired_output)
 {
     Layer* layer = model->layers + model->layer_count - 1;
     
@@ -96,7 +96,7 @@ void model_backwards(Model* model, Vec* desired_output)
     }
 }
 
-float model_cost(Model* model, Vec* desired_output)
+float model_cost(const Model* restrict model, const Vec* restrict desired_output)
 {
     Layer* layer = model->layers + model->layer_count - 1;
     Vec* a = &layer->a;
@@ -110,7 +110,7 @@ float model_cost(Model* model, Vec* desired_output)
     return cost;
 }
 
-void model_update(Model* model, float alpha)
+void model_update(const Model* restrict model, float alpha)
 {
     Layer* layer = model->layers, *next_layer; next_layer = layer + 1;
     for (Layer* end = layer + model->layer_count - 1; layer != end; layer++) {

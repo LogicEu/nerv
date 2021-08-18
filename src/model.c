@@ -38,7 +38,7 @@ Model model_create(int layer_count, ...)
     return model;
 }
 
-Model model_copy(Model* model)
+Model model_copy(const Model* restrict model)
 {
     Model ret = model_new(model->layer_count);
     Layer* layer = ret.layers, *l = model->layers;

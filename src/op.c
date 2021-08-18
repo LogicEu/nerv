@@ -53,7 +53,7 @@ float drelu(float x)
 
 float leaky_relu(float x, float slope)
 {
-    return x * ((x >= 0.0f) + slope * (x < 0.0f));
+    return x * (x >= 0.0f) + slope * (x < 0.0f);
 }
 
 float dleaky_relu(float x, float slope)
