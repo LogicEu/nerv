@@ -31,8 +31,8 @@ Mat matrix_hadamard(const Mat* restrict a, const Mat* restrict b)
 
     int size = ret.rows * ret.columns;
     float* f = ret.data, *af = a->data, *bf = a->data;
-    for (float* end = f + size; f != end; f++) {
-        *f = (*(af++)) * (*(bf++));
+    for (float* end = f + size; f != end; f++, af++, bf++) {
+        *f = (*af) * (*bf);
     }
 
     return ret;
@@ -44,8 +44,8 @@ Mat matrix_transpose(const Mat* restrict m)
     
     float *f = m->data;
     for (int y = 0; y < m->rows; y++) {
-        for (int x = 0; x < m->columns; x++) {
-            *MATRIX_AT(r, y, x) = *(f++);
+        for (int x = 0; x < m->columns; x++, f++) {
+            *MATRIX_AT(r, y, x) = *f;
         }
     }
 
@@ -62,11 +62,10 @@ Mat matrix_multiply(const Mat* restrict a, const Mat* restrict b)
 
     float* f = ret.data;
     for (int y = 0; y < ret.rows; y++) {
-        for (int x = 0; x < ret.columns; x++) {
+        for (int x = 0; x < ret.columns; x++, f++) {
             for (int z = 0; z < a->columns; z++) {
                 *f += (*MATRIX_AT(a, z, y)) * (*MATRIX_AT(b, x, z));
             }
-            f++;
         }
     }
     

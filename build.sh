@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
-name=nerv
+src=src/*.c
+cc=gcc
+name=libnerv
 
 flags=(
     -std=c99
@@ -14,22 +16,20 @@ inc=(
 )
 
 fail_op() {
-    echo "Run with -dlib to build dynamically or -slib to build statically."
-    exit
+    echo "Run with -dlib to build dynamically or -slib to build statically." && exit
 }
 
 fail_os() {
-    echo "OS is not supported yet..."
-    exit
+    echo "OS is not supported yet..." && exit
 }
 
 mac_dlib() {
-    gcc ${flags[*]} ${inc[*]} ${lib[*]} -dynamiclib src/*.c -o lib$name.dylib
-    install_name_tool -id @executable_path/../lib$name.dylib lib$name.dylib
+    $cc ${flags[*]} ${inc[*]} ${lib[*]} -dynamiclib $src -o $name.dylib &&\
+    install_name_tool -id @executable_path/../$name.dylib $name.dylib
 }
 
 linux_dlib() {
-    gcc -shared ${flags[*]} ${inc[*]} ${lib[*]} -lm -fPIC src/*.c -o lib$name.so 
+    $cc -shared ${flags[*]} ${inc[*]} ${lib[*]} -lm -fPIC $src -o $name.so 
 }
 
 dlib() {
@@ -43,23 +43,14 @@ dlib() {
 }
 
 slib() {
-    gcc ${flags[*]} ${inc[*]} -c src/*.c
-    ar -crv lib$name.a *.o
-    rm *.o
+    $cc ${flags[*]} ${inc[*]} -c $src && ar -crv $name.a *.o && rm *.o
 }
 
-clean() {
-    rm lib$name.a
-}
-
-if [[ $# < 1 ]]; then 
-    fail_op
-elif [[ "$1" == "-dlib" ]]; then
-    dlib
-elif [[ "$1" == "-slib" ]]; then
-    slib
-elif [[ "$1" == "-clean" ]]; then
-    clean
-else
-    fail_op
-fi 
+case "$1" in
+    "-dlib")
+        dlib;;
+    "-slib")
+        slib;;
+    *)
+        fail_op;;
+esac

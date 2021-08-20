@@ -6,6 +6,7 @@
 #include <nerv.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 void vector_add(const Vec* restrict dst, const Vec* restrict src)
 {
@@ -15,8 +16,8 @@ void vector_add(const Vec* restrict dst, const Vec* restrict src)
     }
 
     float* f = dst->data, *n = src->data;
-    for (float* end = f + dst->size; f != end; f++) {
-        *f += *(n++);
+    for (float* end = f + dst->size; f != end; f++, n++) {
+        *f += *n;
     }
 }
 
@@ -28,8 +29,8 @@ void vector_sub(const Vec* restrict dst, const Vec* restrict src)
     }
     
     float* f = dst->data, *n = src->data;
-    for (float* end = f + dst->size; f != end; f++) {
-        *f -= *(n++);
+    for (float* end = f + dst->size; f != end; f++, n++) {
+        *f -= *n;
     }
 }
 
@@ -41,8 +42,8 @@ void vector_hadamard(const Vec* restrict dst, const Vec* restrict src)
     }
 
     float* f = dst->data, *n = src->data;
-    for (float* end = f + dst->size; f != end; f++) {
-        *f *= *(n++);
+    for (float* end = f + dst->size; f != end; f++, n++) {
+        *f *= *n;
     }
 }
 
@@ -63,14 +64,11 @@ Vec vector_by_matrix(const Mat* restrict mat, const Vec* restrict vec)
     }
 
     float* f = ret.data, *m = mat->data;
-    for (int y = 0; y < mat->rows; y++) {
+    for (int y = 0; y < mat->rows; y++, f++) {
         float* n = vec->data;
-        for (int x = 0; x < mat->columns; x++) {
+        for (int x = 0; x < mat->columns; x++, m++, n++) {
             *f += (*m) * (*n);
-            m++;
-            n++;
         }
-        f++;
     }
 
     return ret;
@@ -92,8 +90,8 @@ Vec vector_relu(const Vec* restrict v)
     Vec ret = vector(v->size);
     
     float* r = ret.data, *n = v->data;
-    for (float* end = r + ret.size; r != end; r++) {
-        *r = relu(*(n++));
+    for (float* end = r + ret.size; r != end; r++, n++) {
+        *r = _relu(*n);
     }
 
     return ret;
@@ -103,8 +101,8 @@ Vec vector_drelu(const Vec* restrict v)
 {
     Vec ret = vector(v->size);
     float* r = ret.data, *n = v->data;
-    for (float* end = r + ret.size; r != end; r++) {
-        *r = drelu(*(n++));
+    for (float* end = r + ret.size; r != end; r++, n++) {
+        *r = _drelu(*n);
     }
     return ret;
 }
@@ -113,8 +111,8 @@ Vec vector_sigmoid(const Vec* restrict v)
 {
     Vec ret = vector(v->size);
     float* r = ret.data, *n = v->data;
-    for (float* end = r + ret.size; r != end; r++) {
-        *r = sigmoid(*(n++));
+    for (float* end = r + ret.size; r != end; r++, n++) {
+        *r = _sigmoid(*n);
     }
     return ret;
 }
@@ -123,8 +121,8 @@ Vec vector_dsigmoid(const Vec* restrict v)
 {
     Vec ret = vector(v->size);
     float* r = ret.data, *n = v->data;
-    for (float* end = r + ret.size; r != end; r++) {
-        *r = dsigmoid(*(n++));
+    for (float* end = r + ret.size; r != end; r++, n++) {
+        *r = _dsigmoid(*n);
     }
     return ret;
 }
@@ -133,8 +131,8 @@ Vec vector_sigderiv(const Vec* restrict v)
 {
     Vec ret = vector(v->size);
     float* r = ret.data, *n = v->data;
-    for (float* end = r + ret.size; r != end; r++) {
-        *r = sigderiv(*(n++));
+    for (float* end = r + ret.size; r != end; r++, n++) {
+        *r = _sigderiv(*n);
     }
     return ret;
 }
