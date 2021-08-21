@@ -15,7 +15,7 @@ ifeq ($(OS),Darwin)
 	OSFLAGS=-dynamiclib
 	LIB=$(NAME).dylib
 else
-	OSFLAGS=-shared -fPIC
+	OSFLAGS=-lm -shared -fPIC
 	LIB=$(NAME).so
 endif
 
