@@ -16,14 +16,9 @@ float utof(unsigned int u)
     return (float)u / 255.0;
 }
 
-float clampf(float x, float min, float max)
-{
-    return x * (min <= x && x <= max) + max * (x > max) + min * (x < min);
-}
-
 float normf(float x)
 {
-    return clampf(x, 0.0, 1.0);
+    return _clampf(x, 0.0, 1.0);
 }
 
 float sigmoid(float x)

@@ -53,8 +53,8 @@ typedef struct {
  * pseudo random number distribution generator 
  * ******************************************/
 
-void rand_seed(unsigned int seed);
-unsigned int rand_uint();
+void rands(unsigned int seed);
+unsigned int randn();
 double rand_gauss();
 double rand_norm();
 double rand_dist(double standard_deviation, double mean);
@@ -65,7 +65,6 @@ double rand_dist(double standard_deviation, double mean);
 
 unsigned int ftou(float n);
 float utof(unsigned int u);
-float clampf(float x, float min, float max);
 float normf(float x);
 float sigmoid(float x);
 float sigderiv(float sig);
