@@ -8,7 +8,7 @@ extern "C" {
 /******************************
  * nerv tiny C tensor framework
  * ----------------------------
- ****************** @eulogic */
+ ******* @Eugenio Arteaga A. */
 
 typedef struct Vec {
     int size;
@@ -137,12 +137,12 @@ Mat matrix_transpose(const Mat* m);
 
 /*   NEURAL NETWORK AND LAYER STRUCTURES    */
 
-//      z = w * a + b
-//      a = f(z)
-//      c = (a - y)^2
-//      d = 2(a - y) * f'(z)
-//      dw = a * d * g
-//      db = d * g
+/*      z = w * a + b
+        a = f(z)
+        c = (a - y)^2
+        d = 2(a - y) * f'(z)
+        dw = a * d * g
+        db = d * g                          */
 
 /*********************************************
  *          fully connected layers 
