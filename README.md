@@ -1,5 +1,4 @@
-libnerv
-
-nerv tiny C tensor framework
-
-@eulogic
+# nerv
+>
+> nerv is a tiny C tensor library
+>
